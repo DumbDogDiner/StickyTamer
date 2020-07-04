@@ -1,0 +1,10 @@
+name: StickyTamer
+version: ${project.version}
+authors: [Kokumaji]
+main: me.kokumaji.StickyTamer.StickyTamer
+api-version: 1.13
+commands:
+  stickytamer:
+    usage: /stickytamer
+    aliases: [st, tamer]
+    permission: stickytamer.command
