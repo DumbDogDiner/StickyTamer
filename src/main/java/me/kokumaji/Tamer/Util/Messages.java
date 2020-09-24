@@ -1,4 +1,4 @@
-package me.kokumaji.StickyTamer.Util;
+package me.kokumaji.Tamer.Util;
 
 import java.util.HashMap;
 
@@ -17,13 +17,13 @@ public enum Messages {
     ABOUT_PLUGIN("&b{PluginName} {PluginVersion} &7developed by &b{PluginAuthor}"), 
     ENTITY_NOT_YOURS("&7This entity does not belong to you!"), 
     ENITTY_CLEARED_CLAIM("&7Successfully unclaimed this entity!"), 
-    ALLOW_CMD_USAGE("&7/stickytamer allow [Player]"), 
+    ALLOW_CMD_USAGE("&7/Tamer allow [Player]"), 
     ALLOW_CMD_ERROR_FULL_LIST("&7You can't add more than &b8 &7players!"), 
     PLAYER_NOT_EXISTS("&7Could not find player &b{Player}"), 
     CANT_ADD_SELF("&7You're the owner of this entity!"), 
     ADDED_PLAYER("&b{Player} &7can now interact with this entity."), 
     ENTITY_MEMBER_LIST("&7Allowed players:"), 
-    DENY_CMD_USAGE("&7/stickytamer deny [Player]"), 
+    DENY_CMD_USAGE("&7/Tamer deny [Player]"), 
     DENY_CANT_REMOVE("&7Player already removed!"), 
     REMOVED_PLAYER("&b{Player} &7won't be able to interact with this entity anymore"), 
     ENTITY_MEMBERLIST_EMPTY("&7No other players are allowed to interact with this entity."), 

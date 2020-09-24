@@ -1,9 +1,9 @@
-package me.kokumaji.StickyTamer.Objects;
+package me.kokumaji.Tamer.Objects;
 
 import java.util.HashMap;
 import java.util.Map;
 
-import me.kokumaji.StickyTamer.StickyTamer;
+import me.kokumaji.Tamer.Tamer;
 
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
@@ -58,7 +58,7 @@ public abstract class GUI implements Listener {
 
     public void Open(Player player) {
         Inventory inv = this.getInventory();
-        Bukkit.getScheduler().runTask(StickyTamer.GetPlugin(), new Runnable() {
+        Bukkit.getScheduler().runTask(Tamer.GetPlugin(), new Runnable() {
             @Override
             public void run() {
                 player.openInventory(inv);

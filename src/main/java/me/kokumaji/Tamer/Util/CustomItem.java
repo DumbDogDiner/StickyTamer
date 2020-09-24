@@ -1,4 +1,4 @@
-package me.kokumaji.StickyTamer.Util;
+package me.kokumaji.Tamer.Util;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;

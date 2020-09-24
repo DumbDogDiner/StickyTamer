@@ -1,4 +1,4 @@
-package me.kokumaji.StickyTamer.Objects.GUIs;
+package me.kokumaji.Tamer.Objects.GUIs;
 
 import java.util.ArrayList;
 
@@ -12,10 +12,10 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
 
-import me.kokumaji.StickyTamer.Objects.ClickableSlot;
-import me.kokumaji.StickyTamer.Objects.GUI;
-import me.kokumaji.StickyTamer.Util.ClaimingUtil;
-import me.kokumaji.StickyTamer.Util.CustomItem;
+import me.kokumaji.Tamer.Objects.ClickableSlot;
+import me.kokumaji.Tamer.Objects.GUI;
+import me.kokumaji.Tamer.Util.ClaimingUtil;
+import me.kokumaji.Tamer.Util.CustomItem;
 
 public class AccessControlGUI extends GUI {
 

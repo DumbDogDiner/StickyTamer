@@ -31,7 +31,7 @@ plugins {
 
 group 'me.kokumaji'
 version '2.0-DEV'
-mainClassName = 'com.kokumaji.StickyTamer.StickyTamer'
+mainClassName = 'com.kokumaji.Tamer.Tamer'
 compileJava.options.encoding = 'UTF-8'
 
 repositories {
@@ -82,7 +82,7 @@ task obfuscate(type: proguard.gradle.ProGuardTask) {
 
     ignorewarnings
 
-    keep 'public class me.kokumaji.StickyTamer.StickyTamer'
+    keep 'public class me.kokumaji.Tamer.Tamer'
 }
 
 spigot {

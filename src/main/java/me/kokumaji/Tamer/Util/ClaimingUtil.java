@@ -1,4 +1,4 @@
-package me.kokumaji.StickyTamer.Util;
+package me.kokumaji.Tamer.Util;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -15,9 +15,9 @@ import org.bukkit.entity.Player;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 
-import me.kokumaji.StickyTamer.StickyTamer;
-import me.kokumaji.StickyTamer.Listeners.Protectable;
-import me.kokumaji.StickyTamer.Util.MojangUtil.MojangUser;
+import me.kokumaji.Tamer.Tamer;
+import me.kokumaji.Tamer.Listeners.Protectable;
+import me.kokumaji.Tamer.Util.MojangUtil.MojangUser;
 
 public class ClaimingUtil {
 
@@ -33,7 +33,7 @@ public class ClaimingUtil {
             return;
         }
         PersistentDataContainer persistentData = ent.getPersistentDataContainer();
-        String data = persistentData.get(new NamespacedKey(StickyTamer.GetPlugin(), "tamer"), PersistentDataType.STRING);
+        String data = persistentData.get(new NamespacedKey(Tamer.GetPlugin(), "tamer"), PersistentDataType.STRING);
         if (data != null) {
             Messages.ENTITY_ALREADY_CLAIMED.Send(p, true, new HashMap<String, String>() {
                 private static final long serialVersionUID = 1L;
@@ -45,7 +45,7 @@ public class ClaimingUtil {
             });
             return;
         }
-        persistentData.set(new NamespacedKey(StickyTamer.GetPlugin(), "tamer"), PersistentDataType.STRING,
+        persistentData.set(new NamespacedKey(Tamer.GetPlugin(), "tamer"), PersistentDataType.STRING,
                 p.getUniqueId().toString());
         String entityString = ent.getType().toString();
         String sound = "ENTITY_" + entityString + "_AMBIENT";
@@ -63,7 +63,7 @@ public class ClaimingUtil {
         }
 
         PersistentDataContainer persistentData = ent.getPersistentDataContainer();
-        String data = persistentData.get(new NamespacedKey(StickyTamer.GetPlugin(), "allowed"), PersistentDataType.STRING);
+        String data = persistentData.get(new NamespacedKey(Tamer.GetPlugin(), "allowed"), PersistentDataType.STRING);
         ArrayList<String> playerList = new ArrayList<String>();
         if(data != null) {
             playerList = new ArrayList<>(Arrays.asList(data.split(",")));
@@ -105,7 +105,7 @@ public class ClaimingUtil {
             playerList.add(allowed.getUUID().toString());
             String listString = String.join(",", playerList);
 
-            persistentData.set(new NamespacedKey(StickyTamer.GetPlugin(), "allowed"), PersistentDataType.STRING, listString);
+            persistentData.set(new NamespacedKey(Tamer.GetPlugin(), "allowed"), PersistentDataType.STRING, listString);
             Messages.ADDED_PLAYER.Send(sender, true, new HashMap<String, String>() {
                 private static final long serialVersionUID = 1L;
                 {
@@ -126,7 +126,7 @@ public class ClaimingUtil {
         }
 
         PersistentDataContainer persistentData = ent.getPersistentDataContainer();
-        String data = persistentData.get(new NamespacedKey(StickyTamer.GetPlugin(), "allowed"), PersistentDataType.STRING);
+        String data = persistentData.get(new NamespacedKey(Tamer.GetPlugin(), "allowed"), PersistentDataType.STRING);
 
         if(data != null) {
             ArrayList<String> playerList = new ArrayList<>(Arrays.asList(data.split(",")));
@@ -151,7 +151,7 @@ public class ClaimingUtil {
         }
 
         PersistentDataContainer persistentData = ent.getPersistentDataContainer();
-        String data = persistentData.get(new NamespacedKey(StickyTamer.GetPlugin(), "tamer"), PersistentDataType.STRING);
+        String data = persistentData.get(new NamespacedKey(Tamer.GetPlugin(), "tamer"), PersistentDataType.STRING);
         if (data == null) {
             return false;
         }

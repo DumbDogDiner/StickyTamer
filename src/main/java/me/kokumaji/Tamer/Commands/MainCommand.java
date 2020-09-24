@@ -1,4 +1,4 @@
-package me.kokumaji.StickyTamer.Commands;
+package me.kokumaji.Tamer.Commands;
 
 import java.util.HashMap;
 import java.util.List;
@@ -23,16 +23,16 @@ import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.util.Vector;
 
-import me.kokumaji.StickyTamer.StickyTamer;
-import me.kokumaji.StickyTamer.Util.ClaimingUtil;
-import me.kokumaji.StickyTamer.Util.CustomItem;
-import me.kokumaji.StickyTamer.Util.Messages;
-import me.kokumaji.StickyTamer.Util.MojangUtil;
-import me.kokumaji.StickyTamer.Util.MojangUtil.MojangUser;
+import me.kokumaji.Tamer.Tamer;
+import me.kokumaji.Tamer.Util.ClaimingUtil;
+import me.kokumaji.Tamer.Util.CustomItem;
+import me.kokumaji.Tamer.Util.Messages;
+import me.kokumaji.Tamer.Util.MojangUtil;
+import me.kokumaji.Tamer.Util.MojangUtil.MojangUser;
 
 public class MainCommand implements CommandExecutor, TabCompleter {
 
-    private StickyTamer self = StickyTamer.getPlugin(StickyTamer.class);
+    private Tamer self = Tamer.getPlugin(Tamer.class);
     private String[] argumentPool = {
         "info",
         "claim",
@@ -58,7 +58,7 @@ public class MainCommand implements CommandExecutor, TabCompleter {
                     }
                 });
             } else if (args[0].equalsIgnoreCase("info")) {
-                if (!p.hasPermission("stickytamer.info")) {
+                if (!p.hasPermission("Tamer.info")) {
                     Messages.INSUFFICIENT_PERMS.Send(p, true);
                     return true;
                 }
@@ -198,7 +198,7 @@ public class MainCommand implements CommandExecutor, TabCompleter {
                 ItemStack claimTool = CustomItem.Create(Material.BOOK, "§8» §7Entity Claim Book §8«", 1, true, "§8This book allows you to", "§8protect all sorts of entities!");
                 ItemMeta meta = claimTool.getItemMeta();
 
-                NamespacedKey key = new NamespacedKey(StickyTamer.GetPlugin(), "is-tool");
+                NamespacedKey key = new NamespacedKey(Tamer.GetPlugin(), "is-tool");
                 meta.getPersistentDataContainer().set(key, PersistentDataType.INTEGER, 1);
                 claimTool.setItemMeta(meta);
 
@@ -247,7 +247,7 @@ public class MainCommand implements CommandExecutor, TabCompleter {
     @Override
     public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
         ArrayList<String> options = new ArrayList<String>();
-        if(command.getName().equals("stickytamer")) {
+        if(command.getName().equals("Tamer")) {
             if(args.length == 1) {
                 if(!args[0].equals("")) {
                     for(String s : argumentPool) {

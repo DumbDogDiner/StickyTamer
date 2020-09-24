@@ -1,4 +1,4 @@
-package me.kokumaji.StickyTamer.Listeners;
+package me.kokumaji.Tamer.Listeners;
 
 import org.bukkit.entity.Animals;
 import org.bukkit.entity.Entity;

@@ -1,4 +1,4 @@
-package me.kokumaji.StickyTamer.Objects;
+package me.kokumaji.Tamer.Objects;
 
 public enum EntityTexture {
     HORSE("eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNjc5ZDBjZjA2MTVmZjgxYjFkNWQwYjc5MWFmODU0OTRhYjZiNWFmOTcxZGUxOGE0NmE4ZjkxMWIzYjU5NzM2ZSJ9fX0="),

@@ -1,4 +1,4 @@
-package me.kokumaji.StickyTamer.Listeners;
+package me.kokumaji.Tamer.Listeners;
 
 import com.mojang.brigadier.Message;
 
@@ -20,15 +20,15 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 
-import me.kokumaji.StickyTamer.StickyTamer;
-import me.kokumaji.StickyTamer.Objects.GUIs.EntityEditGUI;
-import me.kokumaji.StickyTamer.Objects.GUIs.GUIHandler;
-import me.kokumaji.StickyTamer.Util.ClaimingUtil;
-import me.kokumaji.StickyTamer.Util.Messages;
+import me.kokumaji.Tamer.Tamer;
+import me.kokumaji.Tamer.Objects.GUIs.EntityEditGUI;
+import me.kokumaji.Tamer.Objects.GUIs.GUIHandler;
+import me.kokumaji.Tamer.Util.ClaimingUtil;
+import me.kokumaji.Tamer.Util.Messages;
 
 public class EntityInteractListener implements Listener {
 
-    private StickyTamer self = StickyTamer.getPlugin(StickyTamer.class);
+    private Tamer self = Tamer.getPlugin(Tamer.class);
 
     @EventHandler
     public void onEntityBreed(EntityBreedEvent e) {
@@ -82,7 +82,7 @@ public class EntityInteractListener implements Listener {
                 if (is.getType() == null) {
                     return;
                 } else if (is.getType() == Material.BOOK) {
-                    NamespacedKey key = new NamespacedKey(StickyTamer.GetPlugin(), "is-tool");
+                    NamespacedKey key = new NamespacedKey(Tamer.GetPlugin(), "is-tool");
                     ItemMeta isM = is.getItemMeta();
                     PersistentDataContainer container = isM.getPersistentDataContainer();
                     if (container.has(key, PersistentDataType.INTEGER)) {
@@ -116,7 +116,7 @@ public class EntityInteractListener implements Listener {
                     }
                 }
 
-                if(p.hasPermission("stickytamer.bypass")) return;
+                if(p.hasPermission("Tamer.bypass")) return;
 
                 if(data == null) return;
 
@@ -150,7 +150,7 @@ public class EntityInteractListener implements Listener {
             if(!(e.getDamager() instanceof Player)) return;
             Player p = (Player) e.getDamager();
 
-            if(p.hasPermission("stickytamer.bypass")) return;
+            if(p.hasPermission("Tamer.bypass")) return;
             //todo: change this to include members
             PersistentDataContainer persistentData = ent.getPersistentDataContainer();
             String data = persistentData.get(new NamespacedKey(self, "tamer"), PersistentDataType.STRING);

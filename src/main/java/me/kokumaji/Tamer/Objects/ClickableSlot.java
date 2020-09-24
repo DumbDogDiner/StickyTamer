@@ -1,4 +1,4 @@
-package me.kokumaji.StickyTamer.Objects;
+package me.kokumaji.Tamer.Objects;
 
 import java.util.ArrayList;
 

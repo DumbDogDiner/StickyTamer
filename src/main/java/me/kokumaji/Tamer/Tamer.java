@@ -1,18 +1,18 @@
-package me.kokumaji.StickyTamer;
+package me.kokumaji.Tamer;
 
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import me.kokumaji.StickyTamer.Commands.MainCommand;
-import me.kokumaji.StickyTamer.Listeners.EntityInteractListener;
-import me.kokumaji.StickyTamer.Objects.GUIs.GUIHandler;
+import me.kokumaji.Tamer.Commands.MainCommand;
+import me.kokumaji.Tamer.Listeners.EntityInteractListener;
+import me.kokumaji.Tamer.Objects.GUIs.GUIHandler;
 
-public final class StickyTamer extends JavaPlugin {
+public final class Tamer extends JavaPlugin {
 
     @Override
     public void onEnable() {
-        getCommand("stickytamer").setExecutor(new MainCommand());
+        getCommand("Tamer").setExecutor(new MainCommand());
         Bukkit.getPluginManager().registerEvents(new EntityInteractListener(), this);
         GUIHandler.RegisterGUIs();
     }
@@ -23,6 +23,6 @@ public final class StickyTamer extends JavaPlugin {
     }
 
     public static Plugin GetPlugin() {
-		return getPlugin(StickyTamer.class);
+		return getPlugin(Tamer.class);
     }
 }

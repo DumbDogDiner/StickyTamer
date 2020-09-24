@@ -1,4 +1,4 @@
-package me.kokumaji.StickyTamer.Objects.GUIs;
+package me.kokumaji.Tamer.Objects.GUIs;
 
 import java.util.UUID;
 
@@ -23,12 +23,12 @@ import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.plugin.Plugin;
 
-import me.kokumaji.StickyTamer.StickyTamer;
-import me.kokumaji.StickyTamer.Objects.ClickableSlot;
-import me.kokumaji.StickyTamer.Objects.EntityTexture;
-import me.kokumaji.StickyTamer.Objects.GUI;
-import me.kokumaji.StickyTamer.Util.CustomItem;
-import me.kokumaji.StickyTamer.Util.Messages;
+import me.kokumaji.Tamer.Tamer;
+import me.kokumaji.Tamer.Objects.ClickableSlot;
+import me.kokumaji.Tamer.Objects.EntityTexture;
+import me.kokumaji.Tamer.Objects.GUI;
+import me.kokumaji.Tamer.Util.CustomItem;
+import me.kokumaji.Tamer.Util.Messages;
 
 public class EntityEditGUI extends GUI {
 
@@ -52,7 +52,7 @@ public class EntityEditGUI extends GUI {
                         + (int) ((LivingEntity) ent).getMaxHealth());
         ItemMeta meta = entItem.getItemMeta();
 
-        NamespacedKey key = new NamespacedKey(StickyTamer.GetPlugin(), "entity-id");
+        NamespacedKey key = new NamespacedKey(Tamer.GetPlugin(), "entity-id");
         meta.getPersistentDataContainer().set(key, PersistentDataType.STRING, ent.getUniqueId().toString());
         entItem.setItemMeta(meta);
 
@@ -97,7 +97,7 @@ public class EntityEditGUI extends GUI {
                     cs.Execute(() -> {
                         AccessControlGUI gui = (AccessControlGUI) GUIHandler.GetGUI("access");
                         ItemStack mob = e.getInventory().getItem(10);
-                        NamespacedKey key = new NamespacedKey(StickyTamer.GetPlugin(), "entity-id");
+                        NamespacedKey key = new NamespacedKey(Tamer.GetPlugin(), "entity-id");
                         ItemMeta isM = mob.getItemMeta();
                         PersistentDataContainer container = isM.getPersistentDataContainer();
 
@@ -124,7 +124,7 @@ public class EntityEditGUI extends GUI {
                 });
                 if(cs.GetName().equals("§7§lAbandon This Entity")) cs.Execute(() -> {
                     ItemStack mob = e.getInventory().getItem(10);
-                    NamespacedKey key = new NamespacedKey(StickyTamer.GetPlugin(), "entity-id");
+                    NamespacedKey key = new NamespacedKey(Tamer.GetPlugin(), "entity-id");
                     ItemMeta isM = mob.getItemMeta();
                     PersistentDataContainer container = isM.getPersistentDataContainer();
 
@@ -136,7 +136,7 @@ public class EntityEditGUI extends GUI {
                             return;
                         }
 
-                        String data = ent.getPersistentDataContainer().get(new NamespacedKey(StickyTamer.GetPlugin(), "tamer"), PersistentDataType.STRING);
+                        String data = ent.getPersistentDataContainer().get(new NamespacedKey(Tamer.GetPlugin(), "tamer"), PersistentDataType.STRING);
                         if (data == null) {
                             Messages.ENTITY_UNCLAIMED.Send(p, true);
                             return;
@@ -146,8 +146,8 @@ public class EntityEditGUI extends GUI {
         
                         if(p.getUniqueId().equals(dataUUID)) {
                             Messages.ENITTY_CLEARED_CLAIM.Send(p, true);
-                            ent.getPersistentDataContainer().remove(new NamespacedKey(StickyTamer.GetPlugin(), "tamer"));
-                            ent.getPersistentDataContainer().remove(new NamespacedKey(StickyTamer.GetPlugin(), "allowed"));
+                            ent.getPersistentDataContainer().remove(new NamespacedKey(Tamer.GetPlugin(), "tamer"));
+                            ent.getPersistentDataContainer().remove(new NamespacedKey(Tamer.GetPlugin(), "allowed"));
                         } else {
                             Messages.ENTITY_NOT_YOURS.Send(p, true);
                         }
