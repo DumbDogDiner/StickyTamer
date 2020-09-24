@@ -2,6 +2,7 @@ package me.kokumaji.StickyTamer.Listeners;
 
 import org.bukkit.entity.Animals;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.Villager;
 
 public enum Protectable {
     IRON_GOLEM("IRON_GOLEM"),
@@ -14,7 +15,15 @@ public enum Protectable {
     }
 
     public static boolean IsProtectable(Entity ent) {
-        return ent instanceof Animals;
+        if(ent == null) return false;
+
+        if(ent instanceof Animals) {
+            return true;
+        } else if(ent instanceof Villager) {
+            return true;
+        } 
+
+        return false;
 
         /*for(Protectable s : values()) {
             EntityType entType = EntityType.valueOf(s.type);

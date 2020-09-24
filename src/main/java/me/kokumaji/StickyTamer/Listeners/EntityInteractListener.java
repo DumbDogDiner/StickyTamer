@@ -1,10 +1,12 @@
 package me.kokumaji.StickyTamer.Listeners;
 
+import com.mojang.brigadier.Message;
+
 import org.bukkit.ChatColor;
+import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.Particle;
 import org.bukkit.Sound;
-import org.bukkit.entity.Animals;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -14,18 +16,23 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 
 import me.kokumaji.StickyTamer.StickyTamer;
+import me.kokumaji.StickyTamer.Objects.GUIs.EntityEditGUI;
+import me.kokumaji.StickyTamer.Objects.GUIs.GUIHandler;
+import me.kokumaji.StickyTamer.Util.ClaimingUtil;
 import me.kokumaji.StickyTamer.Util.Messages;
+
 public class EntityInteractListener implements Listener {
 
     private StickyTamer self = StickyTamer.getPlugin(StickyTamer.class);
 
     @EventHandler
     public void onEntityBreed(EntityBreedEvent e) {
-        if(e.getBreeder() instanceof Player) {
+        if (e.getBreeder() instanceof Player) {
             Player p = (Player) e.getBreeder();
             String uuidString = p.getUniqueId().toString();
             Entity ent1 = e.getFather();
@@ -37,10 +44,10 @@ public class EntityInteractListener implements Listener {
             String ownerF = persistentDataF.get(new NamespacedKey(self, "tamer"), PersistentDataType.STRING);
             String ownerM = persistentDataM.get(new NamespacedKey(self, "tamer"), PersistentDataType.STRING);
 
-            if(ownerF == null || ownerM == null) {
+            if (ownerF == null || ownerM == null) {
                 Messages.CHILD_NOT_PROTECTED.Send(p, true);
                 return;
-            } else if(!ownerF.equals(uuidString) || !ownerF.equals(uuidString)) {
+            } else if (!ownerF.equals(uuidString) || !ownerF.equals(uuidString)) {
                 Messages.CHILD_NOT_PROTECTED.Send(p, true);
                 return;
             }
@@ -63,19 +70,65 @@ public class EntityInteractListener implements Listener {
     public void onEntityInteract(PlayerInteractEntityEvent e) {
         Entity ent = e.getRightClicked();
         String entString = ent.getType().toString();
-        Protectable prot = Protectable.valueOf(entString);
-        if(prot != null) {
+        boolean prot = Protectable.IsProtectable(ent);
+        if (prot) {
             Player p = e.getPlayer();
-            if(e.getHand().equals(EquipmentSlot.HAND)) {
+            if (e.getHand().equals(EquipmentSlot.HAND)) {
                 ItemStack is = p.getInventory().getItemInMainHand();
-
-                if(is.getType() == null) return;
-                
                 PersistentDataContainer persistentData = ent.getPersistentDataContainer();
-                if(p.hasPermission("stickytamer.bypass")) return;
                 String data = persistentData.get(new NamespacedKey(self, "tamer"), PersistentDataType.STRING);
                 String dataAllowed = persistentData.get(new NamespacedKey(self, "allowed"), PersistentDataType.STRING);
+
+                if (is.getType() == null) {
+                    return;
+                } else if (is.getType() == Material.BOOK) {
+                    NamespacedKey key = new NamespacedKey(StickyTamer.GetPlugin(), "is-tool");
+                    ItemMeta isM = is.getItemMeta();
+                    PersistentDataContainer container = isM.getPersistentDataContainer();
+                    if (container.has(key, PersistentDataType.INTEGER)) {
+                        if (container.get(key, PersistentDataType.INTEGER) != 1)
+                            return;
+
+                        if (data == null) {
+                            if(p.isSneaking()) {
+                                ClaimingUtil.ClaimEntity(p, ent);
+                                p.playSound(p.getLocation(), Sound.ITEM_BOOK_PAGE_TURN, 1f, 1f);
+                            } else {
+                                Messages.ENTITY_UNCLAIMED_TUTORIAL.Send(p, true);
+                                p.playSound(p.getLocation(), Sound.ENTITY_ARROW_HIT_PLAYER, 0.75f, 1f);
+                            }
+                            return;
+                        }
+                        
+                        if(!(p.getUniqueId().toString().equals(data))) {
+                            e.setCancelled(true);
+                            p.sendMessage(ChatColor.RED + "You can not interact with this entity!");
+                            return;
+                        }
+
+                        p.playSound(p.getLocation(), Sound.ITEM_BOOK_PAGE_TURN, 1f, 1f);
+                        Messages.OPEN_EDIT_MENU.Send(p, true); 
+                        EntityEditGUI gui = (EntityEditGUI) GUIHandler.GetGUI("creative");
+
+                        gui.BuildEntityGUI(p, ent);
+
+                        return;
+                    }
+                }
+
+                if(p.hasPermission("stickytamer.bypass")) return;
+
                 if(data == null) return;
+
+                if(dataAllowed == null) {
+                    if(!(p.getUniqueId().toString().equals(data))) {
+                        p.sendMessage(ChatColor.RED + "You can not interact with this entity!"); 
+                        e.setCancelled(true);
+                    }
+
+                    return;
+                };
+
                 if(dataAllowed.contains(p.getName())) return;
 
                 if(!(p.getUniqueId().toString().equals(data))) {
@@ -92,8 +145,8 @@ public class EntityInteractListener implements Listener {
     public void onEntityDamage(EntityDamageByEntityEvent e) {
         Entity ent = e.getEntity();
         String entString = ent.getType().toString();
-        Protectable prot = Protectable.valueOf(entString);
-        if(prot != null) {
+        boolean prot = Protectable.IsProtectable(ent);
+        if(prot) {
             if(!(e.getDamager() instanceof Player)) return;
             Player p = (Player) e.getDamager();
 
