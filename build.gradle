@@ -78,9 +78,11 @@ shadowJar {
     baseName = "${jar.archivePath}-shadow"
     classifier = ''
     archiveVersion = ''
-
+    
     project.configurations.implementation.canBeResolved = true
     configurations = [project.configurations.shadow]
+
+    minimize()
 }
 
 task obfuscate(type: proguard.gradle.ProGuardTask) {
