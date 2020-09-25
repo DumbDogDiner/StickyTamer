@@ -5,6 +5,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.UUID;
 
+import me.kokumaji.HibiscusAPI.api.translation.Translator;
 import org.bukkit.Bukkit;
 import org.bukkit.NamespacedKey;
 import org.bukkit.OfflinePlayer;
@@ -22,20 +23,21 @@ import me.kokumaji.Tamer.Util.MojangUtil.MojangUser;
 public class ClaimingUtil {
 
     public static void ClaimEntity(Player p, Entity ent) {
-                
+        Translator translator = Tamer.GetTranslator();
+
         if (ent == null) {
-            Messages.NO_ENTITY_FOUND.Send(p, true);
+            Messages.Send(p, translator.Translate("entity.no-entity-found", true));
             return;
         }
 
         if(!Protectable.IsProtectable(ent)) {
-            Messages.CANT_PROTECT.Send(p, true);
+            Messages.Send(p, translator.Translate("entity.cant-protect", true));
             return;
         }
         PersistentDataContainer persistentData = ent.getPersistentDataContainer();
         String data = persistentData.get(new NamespacedKey(Tamer.GetPlugin(), "tamer"), PersistentDataType.STRING);
         if (data != null) {
-            Messages.ENTITY_ALREADY_CLAIMED.Send(p, true, new HashMap<String, String>() {
+            Messages.Send(p, translator.Translate("entity.entity-already-claimed", true), new HashMap<String, String>() {
                 private static final long serialVersionUID = 1L;
 
                 {
@@ -53,13 +55,14 @@ public class ClaimingUtil {
         p.playSound(p.getLocation(), Sound.valueOf(sound), 0.5f, 1.5f);
         p.playSound(p.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 0.5f, 1.5f);
         p.spawnParticle(Particle.HEART, ent.getLocation(), 20, 0.5, 0.5, 0.5);
-        Messages.ENTITY_LINK_SUCCESS.Send(p, true);
+        Messages.Send(p, translator.Translate("entity.entity-link-success", true));
     }
 
-    public static boolean AddUser(Player sender, Entity ent, String other) {
+    public static void AddUser(Player sender, Entity ent, String other) {
+        Translator translator = Tamer.GetTranslator();
         if (ent == null) {
-            Messages.NO_ENTITY_FOUND.Send(sender, true);
-            return false;
+            Messages.Send(sender, translator.Translate("entity.no-entity-found", true));
+            return;
         }
 
         PersistentDataContainer persistentData = ent.getPersistentDataContainer();
@@ -69,8 +72,8 @@ public class ClaimingUtil {
             playerList = new ArrayList<>(Arrays.asList(data.split(",")));
         }
         if(playerList != null && playerList.size() == 8) {
-            Messages.ALLOW_CMD_ERROR_FULL_LIST.Send(sender, true);
-            return false;
+            Messages.Send(sender, translator.Translate("command.allow-cmd-full-list", true));
+            return;
         }
 
         
@@ -79,49 +82,50 @@ public class ClaimingUtil {
 
         
         if(allowed == null) {
-            Messages.PLAYER_NOT_EXISTS.Send(sender, true, new HashMap<String, String>() {
+            Messages.Send(sender, translator.Translate("command.player-not-exists", true), new HashMap<String, String>() {
                 private static final long serialVersionUID = 1L;
+
                 {
                     put("Player", other);
                 }
             });
-            return false;
         } else if(allowed.getUUID() == sender.getUniqueId()) {
-            Messages.CANT_ADD_SELF.Send(sender, true);
-            return false;
+            Messages.Send(sender, translator.Translate("command.cant-add-self", true));
         } else {
             OfflinePlayer offP = Bukkit.getOfflinePlayer(allowed.getUUID());
 
             if(!offP.hasPlayedBefore()) {
-                Messages.PLAYER_NEVER_JOINED.Send(sender, true, new HashMap<String, String>() {
+                Messages.Send(sender, translator.Translate("command.player-never-joined", true), new HashMap<String, String>() {
                     private static final long serialVersionUID = 1L;
+
                     {
                         put("Player", allowed.getName());
                     }
-                });    
-                return false;
+                });
+                return;
             }
 
             playerList.add(allowed.getUUID().toString());
             String listString = String.join(",", playerList);
 
             persistentData.set(new NamespacedKey(Tamer.GetPlugin(), "allowed"), PersistentDataType.STRING, listString);
-            Messages.ADDED_PLAYER.Send(sender, true, new HashMap<String, String>() {
+            Messages.Send(sender, translator.Translate("command.added-player", true), new HashMap<String, String>() {
                 private static final long serialVersionUID = 1L;
+
                 {
                     put("Player", allowed.getName());
                 }
             });
         }
 
-        return true;
     }
 
     public static ArrayList<OfflinePlayer> GetMembers(Player p, Entity ent) {
+        Translator translator = Tamer.GetTranslator();
         ArrayList<OfflinePlayer> players = new ArrayList<OfflinePlayer>();
                                         
         if (ent == null) {
-            Messages.NO_ENTITY_FOUND.Send(p, true);
+            Messages.Send(p, translator.Translate("entity.no-entity-found", true));
             return players;
         }
 
@@ -158,11 +162,7 @@ public class ClaimingUtil {
         
         UUID dataUUID = UUID.fromString(data);
 
-        if(uuid.equals(dataUUID)) {
-            return true;
-        } 
-
-        return false;
+        return uuid.equals(dataUUID);
 
     }
     

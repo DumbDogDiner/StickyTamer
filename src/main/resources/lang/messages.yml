@@ -1,0 +1,28 @@
+entity:
+  entity-owner: "&7Entity Owner of &b{Entity}&7: \n&b{OwnerName} ({OwnerUUID})"
+  entity-already-claimed: "&7This entity already belongs to \n&b{OwnerName} ({OwnerUUID})"
+  entity-unclaimed: "&7Nobody has claimed this entity yet."
+  entity-unclaimed-tutorial: "&7Nobody has claimed this entity yet. &bSneak + Right Click to claim it!"
+  entity-link-success: "&7Successfully claimed this entity!"
+  no-entity-found: "&7You have to look at an entity!"
+  entity-not-yours: "&7This entity does not belong to you!"
+  entity-cleared-claim: "&7Successfully unclaimed this entity!"
+  child-not-protected: "&7Child spawned without protection, due to mother/father entity not being claimed by you."
+  child-protected: "&7A child entity has been protected automatically during breeding."
+  cant-protect: "&7You cannot protect this entity."
+general:
+  insufficient-permissions: "&cYou don't have the permission to execute this command!"
+  full-inventory: "&cYour inventory is full!"
+command:
+  allow-cmd-full-list: "&7You can't add more than &b8 &7players!"
+  added-player: "&b{Player} &7can now interact with this entity."
+  player-not-exists: "&7Could not find player &b{Player}"
+  cant-add-self: "&7You're the owner of this entity!"
+  allowed-players: "&7Allowed players:"
+  allowed-players-empty: "&7No other players are allowed to interact with this entity."
+  deny-cant-remove: "&7Player already removed!"
+  deny-removed-player: "&b{Player} &7won't be able to interact with this entity anymore"
+  claim-tool-added: "&7You received the &bEntity Claim Book&7! Shift + right-click on an entity to claim it."
+  player-never-joined: "&b{Player} &7has never joined the server before."
+gui:
+  open-edit-menu: "&7Opening edit menu..."

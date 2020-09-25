@@ -2,6 +2,7 @@ package me.kokumaji.Tamer.Objects.GUIs;
 
 import java.util.UUID;
 
+import me.kokumaji.HibiscusAPI.api.translation.Translator;
 import org.bukkit.Bukkit;
 import org.bukkit.Color;
 import org.bukkit.Sound;
@@ -32,9 +33,12 @@ import me.kokumaji.Tamer.Util.Messages;
 
 public class EntityEditGUI extends GUI {
 
+    private Translator translator;
+
     public EntityEditGUI(int pSize, Plugin pPlugin) {
         super(pSize, pPlugin);
         Bukkit.getServer().getPluginManager().registerEvents(this, pPlugin);
+        translator = Tamer.GetTranslator();
     }
 
     @Override
@@ -138,18 +142,18 @@ public class EntityEditGUI extends GUI {
 
                         String data = ent.getPersistentDataContainer().get(new NamespacedKey(Tamer.GetPlugin(), "tamer"), PersistentDataType.STRING);
                         if (data == null) {
-                            Messages.ENTITY_UNCLAIMED.Send(p, true);
+                            Messages.Send(p, translator.Translate("entity.entity-unclaimed", true));
                             return;
                         }
                         
                         UUID dataUUID = UUID.fromString(data);
         
                         if(p.getUniqueId().equals(dataUUID)) {
-                            Messages.ENITTY_CLEARED_CLAIM.Send(p, true);
+                            Messages.Send(p, translator.Translate("entity.entity-cleared-claim", true));
                             ent.getPersistentDataContainer().remove(new NamespacedKey(Tamer.GetPlugin(), "tamer"));
                             ent.getPersistentDataContainer().remove(new NamespacedKey(Tamer.GetPlugin(), "allowed"));
                         } else {
-                            Messages.ENTITY_NOT_YOURS.Send(p, true);
+                            Messages.Send(p, translator.Translate("entity.entity-not-yours", true));
                         }
 
                         Bukkit.getScheduler().runTask(this.getPlugin(), new Runnable() {

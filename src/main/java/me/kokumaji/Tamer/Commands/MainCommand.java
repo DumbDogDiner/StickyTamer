@@ -6,6 +6,7 @@ import java.util.UUID;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import me.kokumaji.HibiscusAPI.api.translation.Translator;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
@@ -15,6 +16,7 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -32,8 +34,11 @@ import me.kokumaji.Tamer.Util.MojangUtil.MojangUser;
 
 public class MainCommand implements CommandExecutor, TabCompleter {
 
-    private Tamer self = Tamer.getPlugin(Tamer.class);
-    private String[] argumentPool = {
+    private final Tamer self = (Tamer) Tamer.GetPlugin();
+    private final Translator translator = Tamer.GetTranslator();
+    private final FileConfiguration config = Tamer.GetConfig();
+
+    private final String[] argumentPool = {
         "info",
         "claim",
         "unclaim",
@@ -44,12 +49,13 @@ public class MainCommand implements CommandExecutor, TabCompleter {
     };
 
     @Override
-    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+    public boolean onCommand(CommandSender sender, Command command, String s, String[] args) {
         if (sender instanceof Player) {
             Player p = (Player) sender;
 
-            if (args.length == 0) {
-                Messages.ABOUT_PLUGIN.Send(p, true, new HashMap<String, String>() {
+            if (args.length < 1) {
+                String msg = config.getString("general-settings.plugin-prefix") + " {PluginName} {PluginVersion} developed by {PluginAuthor}";
+                Messages.Send(p, msg, new HashMap<String, String>() {
                     private static final long serialVersionUID = 1L;
                     {
                         put("PluginName", self.getDescription().getName());
@@ -59,22 +65,22 @@ public class MainCommand implements CommandExecutor, TabCompleter {
                 });
             } else if (args[0].equalsIgnoreCase("info")) {
                 if (!p.hasPermission("Tamer.info")) {
-                    Messages.INSUFFICIENT_PERMS.Send(p, true);
+                    Messages.Send(p, translator.Translate("general.insufficient-permissions", true));
                     return true;
                 }
                 Entity ent = GetInSight(p, 10);
                 if (ent == null) {
-                    Messages.NO_ENTITY_FOUND.Send(p, true);
+                    Messages.Send(p, translator.Translate("entity.no-entity-found", true));
                     return true;
                 }
 
                 PersistentDataContainer persistentData = ent.getPersistentDataContainer();
                 String data = persistentData.get(new NamespacedKey(self, "tamer"), PersistentDataType.STRING);
                 if (data == null) {
-                    Messages.ENTITY_UNCLAIMED.Send(p, true);
+                    Messages.Send(p, translator.Translate("entity.entity-unclaimed", true));
                     return true;
                 }
-                Messages.ENTITY_OWNER.Send(p, true, new HashMap<String, String>() {
+                Messages.Send(p, translator.Translate("entity.entity-owner", true), new HashMap<String, String>() {
                     private static final long serialVersionUID = 1L;
 
                     {
@@ -83,26 +89,27 @@ public class MainCommand implements CommandExecutor, TabCompleter {
                         put("Entity", ent.getType().toString());
                     }
                 });
+
             } else if (args[0].equalsIgnoreCase("claim")) {
                 Entity ent = GetInSight(p, 10);
 
                 ClaimingUtil.ClaimEntity(p, ent);
-                
+
             } else if (args[0].equalsIgnoreCase("unclaim")) {
                 Entity ent = GetInSight(p, 10);
-                
+
                 if (ent == null) {
-                    Messages.NO_ENTITY_FOUND.Send(p, true);
+                    Messages.Send(p, translator.Translate("entity.no-entity-found", true));
                     return true;
                 }
 
                 PersistentDataContainer persistentData = ent.getPersistentDataContainer();
                 String data = persistentData.get(new NamespacedKey(self, "tamer"), PersistentDataType.STRING);
                 if (data == null) {
-                    Messages.ENTITY_UNCLAIMED.Send(p, true);
+                    Messages.Send(p, translator.Translate("entity.entity-unclaimed", true));
                     return true;
                 }
-                
+
                 UUID dataUUID = UUID.fromString(data);
 
                 System.out.println(dataUUID);
@@ -110,32 +117,33 @@ public class MainCommand implements CommandExecutor, TabCompleter {
                 System.out.println(p.getUniqueId().equals(dataUUID));
 
                 if(p.getUniqueId().equals(dataUUID)) {
-                    Messages.ENITTY_CLEARED_CLAIM.Send(p, true);
+                    Messages.Send(p, translator.Translate("entity.entity-cleared-claim", true));
                     persistentData.remove(new NamespacedKey(self, "tamer"));
                     persistentData.remove(new NamespacedKey(self, "allowed"));
                 } else {
-                    Messages.ENTITY_NOT_YOURS.Send(p, true);
+                    Messages.Send(p, translator.Translate("entity.entity-not-yours", true));
                 }
             } else if(args[0].equalsIgnoreCase("allow")) {
                 if(args.length == 1) {
-                    Messages.ALLOW_CMD_USAGE.Send(p, true);
+                    //TODO: REPLACE THIS
+                    //Messages.ALLOW_CMD_USAGE.Send(p, true);
                     return true;
                 }
                 Entity ent = GetInSight(p, 10);
-                
+
                 ClaimingUtil.AddUser(p, ent, args[1]);
 
 
             } else if(args[0].equalsIgnoreCase("deny")) {
-                //todo: finish allowing/denying players feature
                 if(args.length == 1) {
-                    Messages.DENY_CMD_USAGE.Send(p, true);
+                    //TODO: REPLACE THIS
+                    //Messages.DENY_CMD_USAGE.Send(p, true);
                     return true;
                 }
                 Entity ent = GetInSight(p, 10);
-            
+
                 if (ent == null) {
-                    Messages.NO_ENTITY_FOUND.Send(p, true);
+                    Messages.Send(p, translator.Translate("entity.no-entity-found", true));
                     return true;
                 }
 
@@ -150,22 +158,24 @@ public class MainCommand implements CommandExecutor, TabCompleter {
                 MojangUser denied = request.resolveUser(args[1]);
 
                 if(denied == null) {
-                    Messages.PLAYER_NOT_EXISTS.Send(p, true, new HashMap<String, String>() {
+                    Messages.Send(p, translator.Translate("command.player-not-exists", true), new HashMap<String, String>() {
                         private static final long serialVersionUID = 1L;
+
                         {
                             put("Player", args[1]);
                         }
                     });
                     return true;
                 } else if(!playerList.contains(denied.getUUID().toString())) {
-                    Messages.DENY_CANT_REMOVE.Send(p, true);
+                    Messages.Send(p, translator.Translate("command.deny-cant-remove", true));
                 } else {
                     playerList.remove(denied.getUUID().toString());
                     String listString = String.join(",", playerList);
 
                     persistentData.set(new NamespacedKey(self, "allowed"), PersistentDataType.STRING, listString);
-                    Messages.REMOVED_PLAYER.Send(p, true, new HashMap<String, String>() {
+                    Messages.Send(p, translator.Translate("command.deny-removed-player", true), new HashMap<String, String>() {
                         private static final long serialVersionUID = 1L;
+
                         {
                             put("Player", args[1]);
                         }
@@ -175,25 +185,25 @@ public class MainCommand implements CommandExecutor, TabCompleter {
             } else if(args[0].equalsIgnoreCase("list")) {
                 //todo: add member list feature
                 Entity ent = GetInSight(p, 10);
-                
+
                 if(!ClaimingUtil.IsOwner(p.getUniqueId(), ent)) {
-                    Messages.ENTITY_NOT_YOURS.Send(p, true);
+                    Messages.Send(p, translator.Translate("entity.entity-not-yours", true));
                     return true;
                 }
 
-                ArrayList<OfflinePlayer> players = ClaimingUtil.GetMembers(p, ent); 
+                ArrayList<OfflinePlayer> players = ClaimingUtil.GetMembers(p, ent);
 
                 if(players.size() < 1) {
-                    Messages.ENTITY_MEMBERLIST_EMPTY.Send(p, true);
+                    Messages.Send(p, translator.Translate("command.allowed-players-empty", true));
                     return true;
                 }
 
-                Messages.ENTITY_MEMBER_LIST.Send(p, true);
+                Messages.Send(p, translator.Translate("command.allowed-players", true));
 
                 for(OfflinePlayer offP : players) {
                     p.sendMessage("§7- §b" + offP.getName());
                 }
-                 
+
             } else if(args[0].equalsIgnoreCase("book")) {
                 ItemStack claimTool = CustomItem.Create(Material.BOOK, "§8» §7Entity Claim Book §8«", 1, true, "§8This book allows you to", "§8protect all sorts of entities!");
                 ItemMeta meta = claimTool.getItemMeta();
@@ -203,19 +213,39 @@ public class MainCommand implements CommandExecutor, TabCompleter {
                 claimTool.setItemMeta(meta);
 
                 if(p.getInventory().firstEmpty() < 0) {
-                    Messages.INVENTORY_FULL.Send(p, true);
+                    Messages.Send(p, translator.Translate("general.full-inventory", true));
                     p.playSound(p.getLocation(), Sound.BLOCK_ANVIL_LAND, 0.75f, 1f);
                     return true;
                 }
 
                 p.getInventory().addItem(claimTool);
-                Messages.CLAIM_TOOL_ADDED.Send(p, true);
+                Messages.Send(p, translator.Translate("command.claim-tool-added", true));
                 p.playSound(p.getLocation(), Sound.ENTITY_CHICKEN_EGG, 0.75f, 1f);
             }
 
         }
 
         return true;
+    }
+
+    @Override
+    public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
+        ArrayList<String> options = new ArrayList<String>();
+        if(command.getName().equals("Tamer")) {
+            if(args.length == 1) {
+                if(!args[0].equals("")) {
+                    for(String s : argumentPool) {
+                        if(s.startsWith(args[0].toLowerCase())) {
+                            options.add(s);
+                        }
+                    }
+                } else {
+                    options.addAll(Arrays.asList(argumentPool));
+                }
+            } if(args.length > 2) return null;
+        }
+
+        return options;
     }
 
     public Entity GetInSight(Player p, int range) {
@@ -243,25 +273,4 @@ public class MainCommand implements CommandExecutor, TabCompleter {
         return bestEntity;
 
     }
-
-    @Override
-    public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
-        ArrayList<String> options = new ArrayList<String>();
-        if(command.getName().equals("Tamer")) {
-            if(args.length == 1) {
-                if(!args[0].equals("")) {
-                    for(String s : argumentPool) {
-                        if(s.startsWith(args[0].toLowerCase())) {
-                            options.add(s);
-                        }
-                    }
-                } else {
-                    options.addAll(Arrays.asList(argumentPool));
-                }
-            } if(args.length > 2) return null;
-        }
-
-        return options;
-    }
-    
 }

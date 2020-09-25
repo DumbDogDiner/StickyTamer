@@ -35,34 +35,44 @@ mainClassName = 'com.kokumaji.Tamer.Tamer'
 compileJava.options.encoding = 'UTF-8'
 
 repositories {
-    // Use jcenter for resolving dependencies.
-    // You can declare any Maven/Ivy/file repository here.
+
+    // Default Gradle repositories
     jcenter()
     mavenCentral()
 
+    // PaperMC repository
     maven {
         url 'https://papermc.io/repo/repository/maven-public/'
     }
 
+    // PlaceholderAPI repository
     maven {
         url = 'https://repo.extendedclip.com/content/repositories/placeholderapi/'
+    }
+
+    // This is for bStats... cuz PlaceholderAPI doesnt like
+    // being shadow jar'd without it...
+    maven {
+        url 'https://repo.codemc.org/repository/maven-public'
     }
 
 }
 
 dependencies {
-    // This dependency is used by the application.
-    compileOnly 'com.google.guava:guava:29.0-jre'
-    implementation "com.zaxxer:HikariCP:3.4.2"
-    compileOnly 'org.projectlombok:lombok:1.18.12'
-	annotationProcessor 'org.projectlombok:lombok:1.18.12'
+    annotationProcessor 'org.projectlombok:lombok:1.18.12'
 
-    compile fileTree(dir: 'libs', include: '*.jar')
-    // testImplementation 'junit:junit:4.13'
+    // These are no Minecraft plugins, so
+    // shadow them into the final jar!
+    shadow "com.zaxxer:HikariCP:3.4.2"
+    shadow files('libs/HibiscusAPI.jar')
 
+    // Since this is a PaperMC plugin, there is
+    // no need to shadow anything into the final jar
+    compile files('libs/spigot-1.16.2.jar')
     compileOnly 'me.clip:placeholderapi:2.10.9'
-    // compileOnly minecraftServer()
 }
+
+// vv Configuring the Gradle plugins below vv
 
 shadowJar {
     baseName = "${jar.archivePath}-shadow"
@@ -70,7 +80,7 @@ shadowJar {
     archiveVersion = ''
 
     project.configurations.implementation.canBeResolved = true
-    configurations = [project.configurations.compile, project.configurations.implementation]
+    configurations = [project.configurations.shadow]
 }
 
 task obfuscate(type: proguard.gradle.ProGuardTask) {
@@ -87,5 +97,14 @@ task obfuscate(type: proguard.gradle.ProGuardTask) {
 
 spigot {
     description 'A Entity Claim Plugin'
+    authors 'Kokumaji'
     apiVersion '1.16'
+    commands {
+        tamer {
+            description = 'Main Command'
+            permission = 'tamer.command'
+            permissionMessage = 'You do not have permission!'
+            usage = '/<command>'
+        }
+    }
 }

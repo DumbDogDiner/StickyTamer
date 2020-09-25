@@ -2,6 +2,7 @@ package me.kokumaji.Tamer.Listeners;
 
 import com.mojang.brigadier.Message;
 
+import me.kokumaji.HibiscusAPI.api.translation.Translator;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
@@ -29,6 +30,7 @@ import me.kokumaji.Tamer.Util.Messages;
 public class EntityInteractListener implements Listener {
 
     private Tamer self = Tamer.getPlugin(Tamer.class);
+    private static Translator translator = Tamer.GetTranslator();
 
     @EventHandler
     public void onEntityBreed(EntityBreedEvent e) {
@@ -45,10 +47,10 @@ public class EntityInteractListener implements Listener {
             String ownerM = persistentDataM.get(new NamespacedKey(self, "tamer"), PersistentDataType.STRING);
 
             if (ownerF == null || ownerM == null) {
-                Messages.CHILD_NOT_PROTECTED.Send(p, true);
+                Messages.Send(p, translator.Translate("entity.child-not-protected", true));
                 return;
             } else if (!ownerF.equals(uuidString) || !ownerF.equals(uuidString)) {
-                Messages.CHILD_NOT_PROTECTED.Send(p, true);
+                Messages.Send(p, translator.Translate("entity.child-not-protected", true));
                 return;
             }
 
@@ -56,7 +58,7 @@ public class EntityInteractListener implements Listener {
             PersistentDataContainer childContainer = ent3.getPersistentDataContainer();
             childContainer.set(new NamespacedKey(self, "tamer"), PersistentDataType.STRING, uuidString);
 
-            Messages.CHILD_PROTECTED.Send(p, true);
+            Messages.Send(p, translator.Translate("entity.child-protected", true));
             String entityString = ent3.getType().toString();
             String sound = "ENTITY_" + entityString + "_AMBIENT";
 
@@ -94,7 +96,7 @@ public class EntityInteractListener implements Listener {
                                 ClaimingUtil.ClaimEntity(p, ent);
                                 p.playSound(p.getLocation(), Sound.ITEM_BOOK_PAGE_TURN, 1f, 1f);
                             } else {
-                                Messages.ENTITY_UNCLAIMED_TUTORIAL.Send(p, true);
+                                Messages.Send(p, translator.Translate("entity.entity-unclaimed-tutorial", true));
                                 p.playSound(p.getLocation(), Sound.ENTITY_ARROW_HIT_PLAYER, 0.75f, 1f);
                             }
                             return;
@@ -107,7 +109,7 @@ public class EntityInteractListener implements Listener {
                         }
 
                         p.playSound(p.getLocation(), Sound.ITEM_BOOK_PAGE_TURN, 1f, 1f);
-                        Messages.OPEN_EDIT_MENU.Send(p, true); 
+                        Messages.Send(p, translator.Translate("gui.open-edit-menu", true));
                         EntityEditGUI gui = (EntityEditGUI) GUIHandler.GetGUI("creative");
 
                         gui.BuildEntityGUI(p, ent);

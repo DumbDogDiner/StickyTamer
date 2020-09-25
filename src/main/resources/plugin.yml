@@ -2,9 +2,8 @@ name: Tamer
 version: ${project.version}
 authors: [Kokumaji]
 main: me.kokumaji.Tamer.Tamer
-api-version: 1.13
+api-version: 1.16
 commands:
   Tamer:
     usage: /Tamer
-    aliases: [st, tamer]
-    permission: Tamer.command
+    permission: tamer.command
