@@ -3,7 +3,9 @@ package me.kokumaji.Tamer;
 import me.kokumaji.HibiscusAPI.api.translation.Translator;
 import me.kokumaji.Tamer.Commands.MainCommand;
 
+import me.kokumaji.Tamer.Listeners.CraftListener;
 import org.bukkit.Bukkit;
+import org.bukkit.NamespacedKey;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -18,10 +20,10 @@ public final class Tamer extends JavaPlugin {
     private static Translator translate;
     private static FileConfiguration config;
 
+
     @Override
     public void onEnable() {
 
-        Bukkit.getPluginManager().registerEvents(new EntityInteractListener(), this);
         this.saveDefaultConfig();
         config = this.getConfig();
 
@@ -29,7 +31,10 @@ public final class Tamer extends JavaPlugin {
             translate = new Translator(this, config, false);
         } catch (IOException e) {
             e.printStackTrace();
-        }   
+        }
+
+        Bukkit.getPluginManager().registerEvents(new EntityInteractListener(), this);
+        Bukkit.getPluginManager().registerEvents(new CraftListener(), this);
 
         getCommand("Tamer").setExecutor(new MainCommand());
         GUIHandler.RegisterGUIs();
@@ -51,4 +56,6 @@ public final class Tamer extends JavaPlugin {
     public static FileConfiguration GetConfig() {
         return config;
     }
+
+
 }

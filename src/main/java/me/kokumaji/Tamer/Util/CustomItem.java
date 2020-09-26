@@ -11,16 +11,24 @@ import com.mojang.authlib.GameProfile;
 import com.mojang.authlib.properties.Property;
 
 import org.bukkit.Material;
+import org.bukkit.NamespacedKey;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.event.Listener;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.SkullMeta;
+import org.bukkit.persistence.PersistentDataContainer;
 
+import me.kokumaji.Tamer.Tamer;
 import net.md_5.bungee.api.ChatColor;
+import org.bukkit.persistence.PersistentDataType;
 
 public class CustomItem implements Listener {
+
+    private static final NamespacedKey tamer = new NamespacedKey(Tamer.GetPlugin(), "tamer");
+    private static final NamespacedKey allowed = new NamespacedKey(Tamer.GetPlugin(), "allowed");
+    private static final NamespacedKey isTool = new NamespacedKey(Tamer.GetPlugin(), "is-tool");
 
     public enum LimiterType {
         MUSHROOM_STEW,
@@ -144,6 +152,30 @@ public class CustomItem implements Listener {
         is.setItemMeta(isM);
         
         return is;
+    }
+
+    public static boolean IsBook(ItemStack is) {
+        NamespacedKey key = GetKey("is-tool");
+        ItemMeta isM = is.getItemMeta();
+        PersistentDataContainer container = isM.getPersistentDataContainer();
+        if(container.has(GetKey("is-tool"), PersistentDataType.INTEGER)) {
+            return container.get(GetKey("is-tool"), PersistentDataType.INTEGER) == 1;
+        }
+
+        return false;
+    }
+
+    public static NamespacedKey GetKey(String s) {
+        switch(s) {
+            case "allowed":
+                return allowed;
+            case "tamer":
+                return tamer;
+            case "is-tool":
+                return isTool;
+        }
+
+        return null;
     }
 
 }

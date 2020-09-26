@@ -35,7 +35,7 @@ public class ClaimingUtil {
             return;
         }
         PersistentDataContainer persistentData = ent.getPersistentDataContainer();
-        String data = persistentData.get(new NamespacedKey(Tamer.GetPlugin(), "tamer"), PersistentDataType.STRING);
+        String data = persistentData.get(CustomItem.GetKey("tamer"), PersistentDataType.STRING);
         if (data != null) {
             Messages.Send(p, translator.Translate("entity.entity-already-claimed", true), new HashMap<String, String>() {
                 private static final long serialVersionUID = 1L;
@@ -47,7 +47,7 @@ public class ClaimingUtil {
             });
             return;
         }
-        persistentData.set(new NamespacedKey(Tamer.GetPlugin(), "tamer"), PersistentDataType.STRING,
+        persistentData.set(CustomItem.GetKey("tamer"), PersistentDataType.STRING,
                 p.getUniqueId().toString());
         String entityString = ent.getType().toString();
         String sound = "ENTITY_" + entityString + "_AMBIENT";
@@ -66,7 +66,7 @@ public class ClaimingUtil {
         }
 
         PersistentDataContainer persistentData = ent.getPersistentDataContainer();
-        String data = persistentData.get(new NamespacedKey(Tamer.GetPlugin(), "allowed"), PersistentDataType.STRING);
+        String data = persistentData.get(CustomItem.GetKey("allowed"), PersistentDataType.STRING);
         ArrayList<String> playerList = new ArrayList<String>();
         if(data != null) {
             playerList = new ArrayList<>(Arrays.asList(data.split(",")));
@@ -108,7 +108,7 @@ public class ClaimingUtil {
             playerList.add(allowed.getUUID().toString());
             String listString = String.join(",", playerList);
 
-            persistentData.set(new NamespacedKey(Tamer.GetPlugin(), "allowed"), PersistentDataType.STRING, listString);
+            persistentData.set(CustomItem.GetKey("allowed"), PersistentDataType.STRING, listString);
             Messages.Send(sender, translator.Translate("command.added-player", true), new HashMap<String, String>() {
                 private static final long serialVersionUID = 1L;
 
@@ -130,7 +130,7 @@ public class ClaimingUtil {
         }
 
         PersistentDataContainer persistentData = ent.getPersistentDataContainer();
-        String data = persistentData.get(new NamespacedKey(Tamer.GetPlugin(), "allowed"), PersistentDataType.STRING);
+        String data = persistentData.get(CustomItem.GetKey("allowed"), PersistentDataType.STRING);
 
         if(data != null) {
             ArrayList<String> playerList = new ArrayList<>(Arrays.asList(data.split(",")));
@@ -155,7 +155,7 @@ public class ClaimingUtil {
         }
 
         PersistentDataContainer persistentData = ent.getPersistentDataContainer();
-        String data = persistentData.get(new NamespacedKey(Tamer.GetPlugin(), "tamer"), PersistentDataType.STRING);
+        String data = persistentData.get(CustomItem.GetKey("tamer"), PersistentDataType.STRING);
         if (data == null) {
             return false;
         }

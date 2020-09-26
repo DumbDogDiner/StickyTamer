@@ -3,6 +3,7 @@ package me.kokumaji.Tamer.Listeners;
 import com.mojang.brigadier.Message;
 
 import me.kokumaji.HibiscusAPI.api.translation.Translator;
+import me.kokumaji.Tamer.Util.CustomItem;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
@@ -84,7 +85,7 @@ public class EntityInteractListener implements Listener {
                 if (is.getType() == null) {
                     return;
                 } else if (is.getType() == Material.BOOK) {
-                    NamespacedKey key = new NamespacedKey(Tamer.GetPlugin(), "is-tool");
+                    NamespacedKey key = CustomItem.GetKey("is-tool");
                     ItemMeta isM = is.getItemMeta();
                     PersistentDataContainer container = isM.getPersistentDataContainer();
                     if (container.has(key, PersistentDataType.INTEGER)) {

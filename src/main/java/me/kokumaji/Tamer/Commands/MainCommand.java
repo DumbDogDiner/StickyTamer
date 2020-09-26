@@ -75,7 +75,7 @@ public class MainCommand implements CommandExecutor, TabCompleter {
                 }
 
                 PersistentDataContainer persistentData = ent.getPersistentDataContainer();
-                String data = persistentData.get(new NamespacedKey(self, "tamer"), PersistentDataType.STRING);
+                String data = persistentData.get(CustomItem.GetKey("tamer"), PersistentDataType.STRING);
                 if (data == null) {
                     Messages.Send(p, translator.Translate("entity.entity-unclaimed", true));
                     return true;
@@ -104,7 +104,7 @@ public class MainCommand implements CommandExecutor, TabCompleter {
                 }
 
                 PersistentDataContainer persistentData = ent.getPersistentDataContainer();
-                String data = persistentData.get(new NamespacedKey(self, "tamer"), PersistentDataType.STRING);
+                String data = persistentData.get(CustomItem.GetKey("tamer"), PersistentDataType.STRING);
                 if (data == null) {
                     Messages.Send(p, translator.Translate("entity.entity-unclaimed", true));
                     return true;
@@ -118,8 +118,8 @@ public class MainCommand implements CommandExecutor, TabCompleter {
 
                 if(p.getUniqueId().equals(dataUUID)) {
                     Messages.Send(p, translator.Translate("entity.entity-cleared-claim", true));
-                    persistentData.remove(new NamespacedKey(self, "tamer"));
-                    persistentData.remove(new NamespacedKey(self, "allowed"));
+                    persistentData.remove(CustomItem.GetKey("tamer"));
+                    persistentData.remove(CustomItem.GetKey("allowed"));
                 } else {
                     Messages.Send(p, translator.Translate("entity.entity-not-yours", true));
                 }
@@ -148,7 +148,7 @@ public class MainCommand implements CommandExecutor, TabCompleter {
                 }
 
                 PersistentDataContainer persistentData = ent.getPersistentDataContainer();
-                String data = persistentData.get(new NamespacedKey(self, "allowed"), PersistentDataType.STRING);
+                String data = persistentData.get(CustomItem.GetKey("allowed"), PersistentDataType.STRING);
                 ArrayList<String> playerList = new ArrayList<String>();
                 if(data != null) {
                     playerList = new ArrayList<>(Arrays.asList(data.split(",")));
@@ -172,7 +172,7 @@ public class MainCommand implements CommandExecutor, TabCompleter {
                     playerList.remove(denied.getUUID().toString());
                     String listString = String.join(",", playerList);
 
-                    persistentData.set(new NamespacedKey(self, "allowed"), PersistentDataType.STRING, listString);
+                    persistentData.set(CustomItem.GetKey("allowed"), PersistentDataType.STRING, listString);
                     Messages.Send(p, translator.Translate("command.deny-removed-player", true), new HashMap<String, String>() {
                         private static final long serialVersionUID = 1L;
 
@@ -208,7 +208,7 @@ public class MainCommand implements CommandExecutor, TabCompleter {
                 ItemStack claimTool = CustomItem.Create(Material.BOOK, "§8» §7Entity Claim Book §8«", 1, true, "§8This book allows you to", "§8protect all sorts of entities!");
                 ItemMeta meta = claimTool.getItemMeta();
 
-                NamespacedKey key = new NamespacedKey(Tamer.GetPlugin(), "is-tool");
+                NamespacedKey key = CustomItem.GetKey("is-tool");
                 meta.getPersistentDataContainer().set(key, PersistentDataType.INTEGER, 1);
                 claimTool.setItemMeta(meta);
 

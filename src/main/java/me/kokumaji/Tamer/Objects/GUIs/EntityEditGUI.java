@@ -3,15 +3,9 @@ package me.kokumaji.Tamer.Objects.GUIs;
 import java.util.UUID;
 
 import me.kokumaji.HibiscusAPI.api.translation.Translator;
-import org.bukkit.Bukkit;
-import org.bukkit.Color;
-import org.bukkit.Sound;
+import org.bukkit.*;
 import org.bukkit.Particle.DustOptions;
 import org.bukkit.craftbukkit.libs.org.apache.commons.lang3.text.WordUtils;
-import org.bukkit.Material;
-import org.bukkit.NamespacedKey;
-import org.bukkit.Particle;
-import org.bukkit.Server;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
@@ -107,7 +101,16 @@ public class EntityEditGUI extends GUI {
 
                         if (container.has(key, PersistentDataType.STRING)) {
                             String id = container.get(key, PersistentDataType.STRING);
-                            Entity ent = ((Server) p.getWorld()).getEntity(UUID.fromString(id));
+                            World w = p.getWorld();
+                            Entity ent = null;
+
+                            for(Entity entity : w.getEntities()) {
+                                if(entity.getUniqueId().equals(UUID.fromString(id))) {
+                                    ent = entity;
+                                    break;
+                                }
+                            }
+
                         if(ent == null) {
                             p.sendMessage("§cERROR: Invalid Entity ID");
                             return;
@@ -134,13 +137,22 @@ public class EntityEditGUI extends GUI {
 
                     if(container.has(key, PersistentDataType.STRING)) {
                         String id = container.get(key, PersistentDataType.STRING);
-                        Entity ent = ((Server) p.getWorld()).getEntity(UUID.fromString(id));
+                        World w = p.getWorld();
+                        Entity ent = null;
+
+                        for(Entity entity : w.getEntities()) {
+                            if(entity.getUniqueId().equals(UUID.fromString(id))) {
+                                ent = entity;
+                                break;
+                            }
+                        }
+
                         if(ent == null) {
                             p.sendMessage("§cERROR: Invalid Entity ID");
                             return;
                         }
 
-                        String data = ent.getPersistentDataContainer().get(new NamespacedKey(Tamer.GetPlugin(), "tamer"), PersistentDataType.STRING);
+                        String data = ent.getPersistentDataContainer().get(CustomItem.GetKey("tamer"), PersistentDataType.STRING);
                         if (data == null) {
                             Messages.Send(p, translator.Translate("entity.entity-unclaimed", true));
                             return;
@@ -150,19 +162,20 @@ public class EntityEditGUI extends GUI {
         
                         if(p.getUniqueId().equals(dataUUID)) {
                             Messages.Send(p, translator.Translate("entity.entity-cleared-claim", true));
-                            ent.getPersistentDataContainer().remove(new NamespacedKey(Tamer.GetPlugin(), "tamer"));
-                            ent.getPersistentDataContainer().remove(new NamespacedKey(Tamer.GetPlugin(), "allowed"));
+                            ent.getPersistentDataContainer().remove(CustomItem.GetKey("tamer"));
+                            ent.getPersistentDataContainer().remove(CustomItem.GetKey("allowed"));
                         } else {
                             Messages.Send(p, translator.Translate("entity.entity-not-yours", true));
                         }
 
+                        Entity finalEnt = ent;
                         Bukkit.getScheduler().runTask(this.getPlugin(), new Runnable() {
                             @Override
                             public void run() {
                                 p.closeInventory();
                                 p.playSound(p.getLocation(), Sound.BLOCK_ENCHANTMENT_TABLE_USE, 1f, 1f);
                                 DustOptions dust = new DustOptions(Color.BLACK, 1f);
-                                p.spawnParticle(Particle.REDSTONE, ent.getLocation(), 20, 1, 1, 1, dust);
+                                p.spawnParticle(Particle.REDSTONE, finalEnt.getLocation(), 20, 1, 1, 1, dust);
                             }
                         });
                     }
