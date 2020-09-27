@@ -5,7 +5,6 @@ import me.kokumaji.Tamer.Commands.MainCommand;
 
 import me.kokumaji.Tamer.Listeners.CraftListener;
 import org.bukkit.Bukkit;
-import org.bukkit.NamespacedKey;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;

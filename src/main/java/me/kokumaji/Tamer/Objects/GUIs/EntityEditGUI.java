@@ -2,6 +2,8 @@ package me.kokumaji.Tamer.Objects.GUIs;
 
 import java.util.UUID;
 
+import me.kokumaji.HibiscusAPI.api.gui.ClickableSlot;
+import me.kokumaji.HibiscusAPI.api.gui.GUI;
 import me.kokumaji.HibiscusAPI.api.translation.Translator;
 import org.bukkit.*;
 import org.bukkit.Particle.DustOptions;
@@ -19,9 +21,7 @@ import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.plugin.Plugin;
 
 import me.kokumaji.Tamer.Tamer;
-import me.kokumaji.Tamer.Objects.ClickableSlot;
 import me.kokumaji.Tamer.Objects.EntityTexture;
-import me.kokumaji.Tamer.Objects.GUI;
 import me.kokumaji.Tamer.Util.CustomItem;
 import me.kokumaji.Tamer.Util.Messages;
 
@@ -82,6 +82,8 @@ public class EntityEditGUI extends GUI {
     @Override
     protected void onSlotClick(InventoryClickEvent e) {
         int slot = e.getSlot();
+
+        if(slot < 0) return;
 
         if (e.getInventory() != getInventory())
             return;
@@ -169,26 +171,18 @@ public class EntityEditGUI extends GUI {
                         }
 
                         Entity finalEnt = ent;
-                        Bukkit.getScheduler().runTask(this.getPlugin(), new Runnable() {
-                            @Override
-                            public void run() {
-                                p.closeInventory();
-                                p.playSound(p.getLocation(), Sound.BLOCK_ENCHANTMENT_TABLE_USE, 1f, 1f);
-                                DustOptions dust = new DustOptions(Color.BLACK, 1f);
-                                p.spawnParticle(Particle.REDSTONE, finalEnt.getLocation(), 20, 1, 1, 1, dust);
-                            }
+                        Bukkit.getScheduler().runTask(this.getPlugin(), () -> {
+                            p.closeInventory();
+                            p.playSound(p.getLocation(), Sound.BLOCK_ENCHANTMENT_TABLE_USE, 1f, 1f);
+                            DustOptions dust = new DustOptions(Color.BLACK, 1f);
+                            p.spawnParticle(Particle.REDSTONE, finalEnt.getLocation(), 20, 1, 1, 1, dust);
                         });
                     }
                 });
-                if(cs.GetName().equals("§c§lClose Menu")) cs.Execute(() -> {
-                    Bukkit.getScheduler().runTask(this.getPlugin(), new Runnable() {
-                        @Override
-                        public void run() {
-                            p.closeInventory();
-                            p.playSound(p.getLocation(), Sound.ITEM_BOOK_PUT, 1f, 1f);
-                        }
-                    });
-                });
+                if(cs.GetName().equals("§c§lClose Menu")) cs.Execute(() -> Bukkit.getScheduler().runTask(this.getPlugin(), () -> {
+                    p.closeInventory();
+                    p.playSound(p.getLocation(), Sound.ITEM_BOOK_PUT, 1f, 1f);
+                }));
             }
         }
     }

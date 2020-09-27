@@ -75,10 +75,8 @@ dependencies {
 // vv Configuring the Gradle plugins below vv
 
 shadowJar {
-    baseName = "${jar.archivePath}-shadow"
-    classifier = ''
-    archiveVersion = ''
-    
+
+    archiveClassifier.set('')
     project.configurations.implementation.canBeResolved = true
     configurations = [project.configurations.shadow]
 

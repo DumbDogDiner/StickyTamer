@@ -1,7 +1,5 @@
 package me.kokumaji.Tamer.Listeners;
 
-import com.mojang.brigadier.Message;
-
 import me.kokumaji.HibiscusAPI.api.translation.Translator;
 import me.kokumaji.Tamer.Util.CustomItem;
 import org.bukkit.ChatColor;
