@@ -90,6 +90,11 @@ public class EntityInteractListener implements Listener {
                         if (container.get(key, PersistentDataType.INTEGER) != 1)
                             return;
 
+                        if (!p.hasPermission("tamer.command.claim")) {
+                            Messages.Send(p, translator.Translate("general.insufficient-permissions", true));
+                            return;
+                        }
+
                         if (data == null) {
                             if(p.isSneaking()) {
                                 ClaimingUtil.ClaimEntity(p, ent);

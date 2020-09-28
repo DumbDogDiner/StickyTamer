@@ -216,7 +216,7 @@ public class MainCommand implements CommandExecutor, TabCompleter {
     @Override
     public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
         ArrayList<String> options = new ArrayList<String>();
-        if(command.getName().equals("Tamer")) {
+        if(command.getName().equals("tamer")) {
             if(args.length == 1) {
                 if(!args[0].equals("")) {
                     for(String s : argumentPool) {

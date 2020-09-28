@@ -25,8 +25,9 @@ put it into your server's plugins folder. There are no additional steps required
 | /tamer | tamer.command | Main command
 | /tamer info | tamer.command.info | Get information about the entity you are currently looking at.
 | /tamer claim | tamer.command.claim | Claim the current entity you are looking at.
+| /tamer unclaim | tamer.command.claim | Abandon the current entity you are looking at.
 | /tamer allow [Player] | tamer.command.allow | Allow another player to interact with your entity.
-| /tamer deny [Player] | tamer.command.deny | Remove a 'whitelisted' player.
+| /tamer deny [Player] | tamer.command.allow | Remove a 'whitelisted' player.
 | /tamer list | tamer.command.list | List all allowed players.
 | /tamer book | tamer.command.book | Get the entity claiming tool.
 

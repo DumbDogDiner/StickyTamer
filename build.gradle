@@ -30,7 +30,7 @@ plugins {
 }
 
 group 'me.kokumaji'
-version '1.0-BETA'
+version '1.0.1-BETA'
 mainClassName = 'com.kokumaji.Tamer.Tamer'
 compileJava.options.encoding = 'UTF-8'
 
