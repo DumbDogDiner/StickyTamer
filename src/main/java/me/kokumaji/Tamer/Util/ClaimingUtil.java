@@ -120,6 +120,54 @@ public class ClaimingUtil {
 
     }
 
+    public static void RemovePlayer(Player owner, Entity ent, String removed) {
+        Translator translator = Tamer.GetTranslator();
+        if (ent == null) {
+            Messages.Send(owner, translator.Translate("entity.no-entity-found", true));
+            return;
+        }
+
+        PersistentDataContainer persistentData = ent.getPersistentDataContainer();
+        String data = persistentData.get(CustomItem.GetKey("allowed"), PersistentDataType.STRING);
+        ArrayList<String> playerList = new ArrayList<String>();
+        if(data != null) {
+            playerList = new ArrayList<>(Arrays.asList(data.split(",")));
+        }
+
+        MojangUtil request = new MojangUtil();
+        MojangUser denied = request.resolveUser(removed);
+
+        if(denied == null) {
+            Messages.Send(owner, translator.Translate("command.player-not-exists", true), new HashMap<String, String>() {
+                private static final long serialVersionUID = 1L;
+
+                {
+                    put("Player", removed);
+                }
+            });
+            return;
+        } else if(!playerList.contains(denied.getUUID().toString())) {
+            Messages.Send(owner, translator.Translate("command.deny-cant-remove", true));
+        } else {
+            playerList.remove(denied.getUUID().toString());
+
+            if(playerList.size() < 1) {
+                persistentData.remove(CustomItem.GetKey("allowed"));
+            } else {
+                String listString = String.join(",", playerList);
+                persistentData.set(CustomItem.GetKey("allowed"), PersistentDataType.STRING, listString);
+            }
+
+            Messages.Send(owner, translator.Translate("command.deny-removed-player", true), new HashMap<String, String>() {
+                private static final long serialVersionUID = 1L;
+
+                {
+                    put("Player", removed);
+                }
+            });
+        }
+    }
+
     public static ArrayList<OfflinePlayer> GetMembers(Player p, Entity ent) {
         Translator translator = Tamer.GetTranslator();
         ArrayList<OfflinePlayer> players = new ArrayList<OfflinePlayer>();
@@ -136,6 +184,7 @@ public class ClaimingUtil {
             ArrayList<String> playerList = new ArrayList<>(Arrays.asList(data.split(",")));
             for(String s : playerList) {
                 s = s.replace(",", "");
+                if(s.equals("") || s.length() < 1) continue;
                 OfflinePlayer offP = Bukkit.getOfflinePlayer(UUID.fromString(s));
 
                 if(offP == null) continue;

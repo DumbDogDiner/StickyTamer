@@ -41,6 +41,11 @@ public class EntityEditGUI extends GUI {
     }
 
     public void BuildEntityGUI(Player player, Entity ent) {
+        if (!player.hasPermission("tamer.command.book")) {
+            Messages.Send(player, translator.Translate("general.insufficient-permissions", true));
+            return;
+        }
+
         this.MakeInventory("§0» §8Entity Editor");
         EntityType entType = ent.getType();
         String name = ent.getCustomName() != null ? ent.getCustomName() : WordUtils.capitalize(ent.getType().getName());

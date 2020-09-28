@@ -4,6 +4,7 @@ import me.kokumaji.HibiscusAPI.api.translation.Translator;
 import me.kokumaji.Tamer.Commands.MainCommand;
 
 import me.kokumaji.Tamer.Listeners.CraftListener;
+import me.kokumaji.Tamer.Listeners.PlayerChatListener;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.Plugin;
@@ -19,7 +20,6 @@ public final class Tamer extends JavaPlugin {
     private static Translator translate;
     private static FileConfiguration config;
 
-
     @Override
     public void onEnable() {
 
@@ -34,8 +34,10 @@ public final class Tamer extends JavaPlugin {
 
         Bukkit.getPluginManager().registerEvents(new EntityInteractListener(), this);
         Bukkit.getPluginManager().registerEvents(new CraftListener(), this);
+        Bukkit.getPluginManager().registerEvents(new PlayerChatListener(), this);
 
         getCommand("Tamer").setExecutor(new MainCommand());
+        getCommand("Tamer").setTabCompleter(new MainCommand());
         GUIHandler.RegisterGUIs();
     }
 

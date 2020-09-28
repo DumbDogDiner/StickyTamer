@@ -64,7 +64,7 @@ public class MainCommand implements CommandExecutor, TabCompleter {
                     }
                 });
             } else if (args[0].equalsIgnoreCase("info")) {
-                if (!p.hasPermission("Tamer.info")) {
+                if (!p.hasPermission("tamer.command.info")) {
                     Messages.Send(p, translator.Translate("general.insufficient-permissions", true));
                     return true;
                 }
@@ -91,11 +91,19 @@ public class MainCommand implements CommandExecutor, TabCompleter {
                 });
 
             } else if (args[0].equalsIgnoreCase("claim")) {
+                if (!p.hasPermission("tamer.command.claim")) {
+                    Messages.Send(p, translator.Translate("general.insufficient-permissions", true));
+                    return true;
+                }
                 Entity ent = GetInSight(p, 10);
 
                 ClaimingUtil.ClaimEntity(p, ent);
 
             } else if (args[0].equalsIgnoreCase("unclaim")) {
+                if (!p.hasPermission("tamer.command.claim")) {
+                    Messages.Send(p, translator.Translate("general.insufficient-permissions", true));
+                    return true;
+                }
                 Entity ent = GetInSight(p, 10);
 
                 if (ent == null) {
@@ -124,6 +132,10 @@ public class MainCommand implements CommandExecutor, TabCompleter {
                     Messages.Send(p, translator.Translate("entity.entity-not-yours", true));
                 }
             } else if(args[0].equalsIgnoreCase("allow")) {
+                if (!p.hasPermission("tamer.command.allow")) {
+                    Messages.Send(p, translator.Translate("general.insufficient-permissions", true));
+                    return true;
+                }
                 if(args.length == 1) {
                     //TODO: REPLACE THIS
                     //Messages.ALLOW_CMD_USAGE.Send(p, true);
@@ -135,6 +147,10 @@ public class MainCommand implements CommandExecutor, TabCompleter {
 
 
             } else if(args[0].equalsIgnoreCase("deny")) {
+                if (!p.hasPermission("tamer.command.allow")) {
+                    Messages.Send(p, translator.Translate("general.insufficient-permissions", true));
+                    return true;
+                }
                 if(args.length == 1) {
                     //TODO: REPLACE THIS
                     //Messages.DENY_CMD_USAGE.Send(p, true);
@@ -142,48 +158,13 @@ public class MainCommand implements CommandExecutor, TabCompleter {
                 }
                 Entity ent = GetInSight(p, 10);
 
-                if (ent == null) {
-                    Messages.Send(p, translator.Translate("entity.no-entity-found", true));
-                    return true;
-                }
 
-                PersistentDataContainer persistentData = ent.getPersistentDataContainer();
-                String data = persistentData.get(CustomItem.GetKey("allowed"), PersistentDataType.STRING);
-                ArrayList<String> playerList = new ArrayList<String>();
-                if(data != null) {
-                    playerList = new ArrayList<>(Arrays.asList(data.split(",")));
-                }
-
-                MojangUtil request = new MojangUtil();
-                MojangUser denied = request.resolveUser(args[1]);
-
-                if(denied == null) {
-                    Messages.Send(p, translator.Translate("command.player-not-exists", true), new HashMap<String, String>() {
-                        private static final long serialVersionUID = 1L;
-
-                        {
-                            put("Player", args[1]);
-                        }
-                    });
-                    return true;
-                } else if(!playerList.contains(denied.getUUID().toString())) {
-                    Messages.Send(p, translator.Translate("command.deny-cant-remove", true));
-                } else {
-                    playerList.remove(denied.getUUID().toString());
-                    String listString = String.join(",", playerList);
-
-                    persistentData.set(CustomItem.GetKey("allowed"), PersistentDataType.STRING, listString);
-                    Messages.Send(p, translator.Translate("command.deny-removed-player", true), new HashMap<String, String>() {
-                        private static final long serialVersionUID = 1L;
-
-                        {
-                            put("Player", args[1]);
-                        }
-                    });
-                }
 
             } else if(args[0].equalsIgnoreCase("list")) {
-                //todo: add member list feature
+                if (!p.hasPermission("tamer.command.list")) {
+                    Messages.Send(p, translator.Translate("general.insufficient-permissions", true));
+                    return true;
+                }
                 Entity ent = GetInSight(p, 10);
 
                 if(!ClaimingUtil.IsOwner(p.getUniqueId(), ent)) {
@@ -205,6 +186,10 @@ public class MainCommand implements CommandExecutor, TabCompleter {
                 }
 
             } else if(args[0].equalsIgnoreCase("book")) {
+                if (!p.hasPermission("tamer.command.book")) {
+                    Messages.Send(p, translator.Translate("general.insufficient-permissions", true));
+                    return true;
+                }
                 ItemStack claimTool = CustomItem.Create(Material.BOOK, "§8» §7Entity Claim Book §8«", 1, true, "§8This book allows you to", "§8protect all sorts of entities!");
                 ItemMeta meta = claimTool.getItemMeta();
 

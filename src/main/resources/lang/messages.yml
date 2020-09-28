@@ -10,6 +10,9 @@ entity:
   child-not-protected: "&7Child spawned without protection, due to mother/father entity not being claimed by you."
   child-protected: "&7A child entity has been protected automatically during breeding."
   cant-protect: "&7You cannot protect this entity."
+  enter-username-chat: "&7Enter the username of the player you wish to add. Type &b!cancel &7to cancel."
+  player-add-cancelled: "&7Process cancelled! No player will be added."
+  player-add-invalid: "&7Invalid username or format!"
 general:
   insufficient-permissions: "&cYou don't have the permission to execute this command!"
   full-inventory: "&cYour inventory is full!"
