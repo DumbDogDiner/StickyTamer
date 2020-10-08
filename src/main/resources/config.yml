@@ -1,4 +1,32 @@
 general-settings:
+
+    # Change the chat prefix of this plugin
     plugin-prefix: "&3&lTamer &7»"
 
-version: 1.0
+    # Send debug statements (useful when sending bug reports!)
+    debug-plugin: false
+
+protection-settings:
+
+    # Whether the player should receive notifications 
+    silent: false
+
+    # Other entities can't interact with protected entities
+    entity-damage: true
+
+    protectable:
+        - BEE
+        - CAT
+        - CHICKEN
+        - COW
+        - DONKEY
+        - FOX
+        - HORSE
+        - MULE
+        - PIG
+        - SHEEP
+        - WOLF
+
+# PLUGIN VERSION.
+# DO NOT EDIT THIS!
+version: 1.1

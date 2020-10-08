@@ -32,7 +32,7 @@ public class EntityEditGUI extends GUI {
     public EntityEditGUI(int pSize, Plugin pPlugin) {
         super(pSize, pPlugin);
         Bukkit.getServer().getPluginManager().registerEvents(this, pPlugin);
-        translator = Tamer.GetTranslator();
+        translator = Tamer.getTranslator();
     }
 
     @Override
@@ -41,7 +41,7 @@ public class EntityEditGUI extends GUI {
     }
 
     public void BuildEntityGUI(Player player, Entity ent) {
-        if (!player.hasPermission("tamer.command.book")) {
+        if (!player.hasPermission("tamer.command.tool")) {
             Messages.Send(player, translator.Translate("general.insufficient-permissions", true));
             return;
         }
@@ -50,12 +50,12 @@ public class EntityEditGUI extends GUI {
         EntityType entType = ent.getType();
         String name = ent.getCustomName() != null ? ent.getCustomName() : WordUtils.capitalize(ent.getType().getName());
 
-        ItemStack entItem = CustomItem.CreateSkull(EntityTexture.valueOf(entType.toString()).GetBase64(), "§7§l" + name,
+        ItemStack entItem = CustomItem.CreateSkull(EntityTexture.valueOf(entType.toString()).getBase64(), "§7§l" + name,
                 1, "&8Health: §b" + (int) ((LivingEntity) ent).getHealth() + "§8/§b"
                         + (int) ((LivingEntity) ent).getMaxHealth());
         ItemMeta meta = entItem.getItemMeta();
 
-        NamespacedKey key = new NamespacedKey(Tamer.GetPlugin(), "entity-id");
+        NamespacedKey key = new NamespacedKey(Tamer.getInstance(), "entity-id");
         meta.getPersistentDataContainer().set(key, PersistentDataType.STRING, ent.getUniqueId().toString());
         entItem.setItemMeta(meta);
 
@@ -102,7 +102,7 @@ public class EntityEditGUI extends GUI {
                     cs.Execute(() -> {
                         AccessControlGUI gui = (AccessControlGUI) GUIHandler.GetGUI("access");
                         ItemStack mob = e.getInventory().getItem(10);
-                        NamespacedKey key = new NamespacedKey(Tamer.GetPlugin(), "entity-id");
+                        NamespacedKey key = new NamespacedKey(Tamer.getInstance(), "entity-id");
                         ItemMeta isM = mob.getItemMeta();
                         PersistentDataContainer container = isM.getPersistentDataContainer();
 
@@ -138,7 +138,7 @@ public class EntityEditGUI extends GUI {
                 });
                 if(cs.GetName().equals("§7§lAbandon This Entity")) cs.Execute(() -> {
                     ItemStack mob = e.getInventory().getItem(10);
-                    NamespacedKey key = new NamespacedKey(Tamer.GetPlugin(), "entity-id");
+                    NamespacedKey key = new NamespacedKey(Tamer.getInstance(), "entity-id");
                     ItemMeta isM = mob.getItemMeta();
                     PersistentDataContainer container = isM.getPersistentDataContainer();
 

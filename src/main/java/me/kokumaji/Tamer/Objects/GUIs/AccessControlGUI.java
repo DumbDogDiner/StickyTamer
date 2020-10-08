@@ -35,7 +35,7 @@ public class AccessControlGUI extends GUI {
     protected AccessControlGUI(int pSize, Plugin pPlugin) {
         super(pSize, pPlugin);
         Bukkit.getServer().getPluginManager().registerEvents(this, pPlugin);
-        translator = Tamer.GetTranslator();
+        translator = Tamer.getTranslator();
     }
 
     @Override
@@ -59,12 +59,12 @@ public class AccessControlGUI extends GUI {
         EntityType entType = ent.getType();
         String name = ent.getCustomName() != null ? ent.getCustomName() : WordUtils.capitalize(ent.getType().getName());
 
-        ItemStack entItem = CustomItem.CreateSkull(EntityTexture.valueOf(entType.toString()).GetBase64(), "§7§l" + name,
+        ItemStack entItem = CustomItem.CreateSkull(EntityTexture.valueOf(entType.toString()).getBase64(), "§7§l" + name,
                 1, "&8Health: §b" + (int) ((LivingEntity) ent).getHealth() + "§8/§b"
                         + (int) ((LivingEntity) ent).getMaxHealth());
         ItemMeta meta = entItem.getItemMeta();
 
-        NamespacedKey key = new NamespacedKey(Tamer.GetPlugin(), "entity-id");
+        NamespacedKey key = new NamespacedKey(Tamer.getInstance(), "entity-id");
         meta.getPersistentDataContainer().set(key, PersistentDataType.STRING, ent.getUniqueId().toString());
         entItem.setItemMeta(meta);
 
@@ -101,7 +101,7 @@ public class AccessControlGUI extends GUI {
             Player p = (Player) e.getWhoClicked();
 
             ItemStack mob = e.getInventory().getItem(4);
-            NamespacedKey key = new NamespacedKey(Tamer.GetPlugin(), "entity-id");
+            NamespacedKey key = new NamespacedKey(Tamer.getInstance(), "entity-id");
             ItemMeta isM = mob.getItemMeta();
             PersistentDataContainer container = isM.getPersistentDataContainer();
             Entity ent = null;

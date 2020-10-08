@@ -29,14 +29,14 @@ put it into your server's plugins folder. There are no additional steps required
 | /tamer allow [Player] | tamer.command.allow | Allow another player to interact with your entity.
 | /tamer deny [Player] | tamer.command.allow | Remove a 'whitelisted' player.
 | /tamer list | tamer.command.list | List all allowed players.
-| /tamer book | tamer.command.book | Get the entity claiming tool.
+| /tamer tool | tamer.command.tool | Get the entity claiming tool.
 
 | Permission | Description | 
 | --- | --- |
 | tamer.bypass | Bypass entity protection 
 
 ### **How to use the claim tool** 
-In order to use the claim tool, a player requires the permission `tamer.command.book` as well as the `tamer.command.allow` permission to add new players.
+In order to use the claim tool, a player requires the permission `tamer.command.tool` as well as the `tamer.command.allow` permission to add new players.
 To claim an entity, simply `Shift + Rightclick` on an compatible entity (as of right now, only animals may be protected)!
 
 ### **Configuration** 

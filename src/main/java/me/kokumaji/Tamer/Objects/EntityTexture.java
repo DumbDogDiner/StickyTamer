@@ -19,11 +19,7 @@ public enum EntityTexture {
         this.base64 = url;
     }
 
-    public String GetBase64() {
+    public String getBase64() {
         return base64;
     }
-
-	public static String fromString(String string) {
-		return null;
-	}
 }

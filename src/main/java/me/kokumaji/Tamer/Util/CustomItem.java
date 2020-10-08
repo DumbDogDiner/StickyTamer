@@ -26,9 +26,9 @@ import org.bukkit.persistence.PersistentDataType;
 
 public class CustomItem implements Listener {
 
-    private static final NamespacedKey tamer = new NamespacedKey(Tamer.GetPlugin(), "tamer");
-    private static final NamespacedKey allowed = new NamespacedKey(Tamer.GetPlugin(), "allowed");
-    private static final NamespacedKey isTool = new NamespacedKey(Tamer.GetPlugin(), "is-tool");
+    private static final NamespacedKey tamer = new NamespacedKey(Tamer.getInstance(), "tamer");
+    private static final NamespacedKey allowed = new NamespacedKey(Tamer.getInstance(), "allowed");
+    private static final NamespacedKey isTool = new NamespacedKey(Tamer.getInstance(), "is-tool");
 
     public enum LimiterType {
         MUSHROOM_STEW,
@@ -154,7 +154,7 @@ public class CustomItem implements Listener {
         return is;
     }
 
-    public static boolean IsBook(ItemStack is) {
+    public static boolean IsTool(ItemStack is) {
         NamespacedKey key = GetKey("is-tool");
         ItemMeta isM = is.getItemMeta();
         PersistentDataContainer container = isM.getPersistentDataContainer();

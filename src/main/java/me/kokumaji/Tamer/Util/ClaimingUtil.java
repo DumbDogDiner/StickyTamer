@@ -23,7 +23,7 @@ import me.kokumaji.Tamer.Util.MojangUtil.MojangUser;
 public class ClaimingUtil {
 
     public static void ClaimEntity(Player p, Entity ent) {
-        Translator translator = Tamer.GetTranslator();
+        Translator translator = Tamer.getTranslator();
 
         if (ent == null) {
             Messages.Send(p, translator.Translate("entity.no-entity-found", true));
@@ -59,7 +59,7 @@ public class ClaimingUtil {
     }
 
     public static void AddUser(Player sender, Entity ent, String other) {
-        Translator translator = Tamer.GetTranslator();
+        Translator translator = Tamer.getTranslator();
         if (ent == null) {
             Messages.Send(sender, translator.Translate("entity.no-entity-found", true));
             return;
@@ -121,7 +121,7 @@ public class ClaimingUtil {
     }
 
     public static void RemovePlayer(Player owner, Entity ent, String removed) {
-        Translator translator = Tamer.GetTranslator();
+        Translator translator = Tamer.getTranslator();
         if (ent == null) {
             Messages.Send(owner, translator.Translate("entity.no-entity-found", true));
             return;
@@ -169,7 +169,7 @@ public class ClaimingUtil {
     }
 
     public static ArrayList<OfflinePlayer> GetMembers(Player p, Entity ent) {
-        Translator translator = Tamer.GetTranslator();
+        Translator translator = Tamer.getTranslator();
         ArrayList<OfflinePlayer> players = new ArrayList<OfflinePlayer>();
                                         
         if (ent == null) {

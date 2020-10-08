@@ -25,7 +25,7 @@ command:
   allowed-players-empty: "&7No other players are allowed to interact with this entity."
   deny-cant-remove: "&7Player already removed!"
   deny-removed-player: "&b{Player} &7won't be able to interact with this entity anymore"
-  claim-tool-added: "&7You received the &bEntity Claim Book&7! Shift + right-click on an entity to claim it."
+  claim-tool-added: "&7You received the &bEntity Claim Tool&7! Shift + right-click on an entity to claim it."
   player-never-joined: "&b{Player} &7has never joined the server before."
 gui:
   open-edit-menu: "&7Opening edit menu..."

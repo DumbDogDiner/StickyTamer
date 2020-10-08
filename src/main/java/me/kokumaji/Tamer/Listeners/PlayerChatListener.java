@@ -17,7 +17,7 @@ public class PlayerChatListener implements Listener {
     public void onChat(AsyncPlayerChatEvent e) {
         Player p = e.getPlayer();
         if(EditorCache.GetEntity(p) != null) {
-            Translator tr = Tamer.GetTranslator();
+            Translator tr = Tamer.getTranslator();
             Entity ent = EditorCache.GetEntity(p);
             String msg = e.getMessage();
 

@@ -17,6 +17,7 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -34,9 +35,9 @@ import me.kokumaji.Tamer.Util.MojangUtil.MojangUser;
 
 public class MainCommand implements CommandExecutor, TabCompleter {
 
-    private final Tamer self = (Tamer) Tamer.GetPlugin();
-    private final Translator translator = Tamer.GetTranslator();
-    private final FileConfiguration config = Tamer.GetConfig();
+    private final Tamer self = (Tamer) Tamer.getInstance();
+    private final Translator translator = Tamer.getTranslator();
+    private final FileConfiguration config = Tamer.getPluginConfig();
 
     private final String[] argumentPool = {
         "info",
@@ -185,12 +186,13 @@ public class MainCommand implements CommandExecutor, TabCompleter {
                     p.sendMessage("§7- §b" + offP.getName());
                 }
 
-            } else if(args[0].equalsIgnoreCase("book")) {
-                if (!p.hasPermission("tamer.command.book")) {
+            } else if(args[0].equalsIgnoreCase("tool")) {
+                if (!p.hasPermission("tamer.command.tool")) {
                     Messages.Send(p, translator.Translate("general.insufficient-permissions", true));
                     return true;
                 }
-                ItemStack claimTool = CustomItem.Create(Material.BOOK, "§8» §7Entity Claim Book §8«", 1, true, "§8This book allows you to", "§8protect all sorts of entities!");
+                ItemStack claimTool = CustomItem.Create(Material.WOODEN_HOE, "§8» §7Entity Claim Tool §8«", 1, true, "§8This tool allows you to", "§8protect all sorts of entities!");
+                claimTool.addEnchantment(Enchantment.VANISHING_CURSE, 1);
                 ItemMeta meta = claimTool.getItemMeta();
 
                 NamespacedKey key = CustomItem.GetKey("is-tool");

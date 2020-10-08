@@ -11,8 +11,8 @@ public class GUIHandler {
     private static Map<String, GUI> guiMap = new HashMap<String, GUI>();
 
     public static void RegisterGUIs() {
-        guiMap.put("creative", new EntityEditGUI(27, Tamer.GetPlugin()));
-        guiMap.put("access", new AccessControlGUI(27, Tamer.GetPlugin()));
+        guiMap.put("creative", new EntityEditGUI(27, Tamer.getInstance()));
+        guiMap.put("access", new AccessControlGUI(27, Tamer.getInstance()));
     }
 
     public static GUI GetGUI(String name) {

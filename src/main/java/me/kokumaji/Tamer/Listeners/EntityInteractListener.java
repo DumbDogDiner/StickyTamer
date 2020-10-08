@@ -29,7 +29,7 @@ import me.kokumaji.Tamer.Util.Messages;
 public class EntityInteractListener implements Listener {
 
     private Tamer self = Tamer.getPlugin(Tamer.class);
-    private static Translator translator = Tamer.GetTranslator();
+    private static Translator translator = Tamer.getTranslator();
 
     @EventHandler
     public void onEntityBreed(EntityBreedEvent e) {
@@ -82,7 +82,7 @@ public class EntityInteractListener implements Listener {
 
                 if (is.getType() == null) {
                     return;
-                } else if (is.getType() == Material.BOOK) {
+                } else if (is.getType() == Material.WOODEN_HOE) {
                     NamespacedKey key = CustomItem.GetKey("is-tool");
                     ItemMeta isM = is.getItemMeta();
                     PersistentDataContainer container = isM.getPersistentDataContainer();

@@ -46,15 +46,15 @@ public final class Tamer extends JavaPlugin {
         
     }
 
-    public static Plugin GetPlugin() {
+    public static Plugin getInstance() {
 		return getPlugin(Tamer.class);
     }
 
-    public static Translator GetTranslator() {
+    public static Translator getTranslator() {
         return translate;
     }
 
-    public static FileConfiguration GetConfig() {
+    public static FileConfiguration getPluginConfig() {
         return config;
     }
 
